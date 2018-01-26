@@ -18,10 +18,10 @@ namespace sidhu_identity_server
         public void ConfigureServices(IServiceCollection services)
         {
 	        services.AddIdentityServer()
-		        .AddInMemoryClients(new List<Client>())
-		        .AddInMemoryIdentityResources(new List<IdentityResource>())
-		        .AddInMemoryApiResources(new List<ApiResource>())
-		        .AddTestUsers(new List<TestUser>())
+		        .AddInMemoryClients(Clients.Get())
+		        .AddInMemoryIdentityResources(Resources.GetIdentityResources())
+		        .AddInMemoryApiResources(Resources.GetApiResources())
+		        .AddTestUsers(Users.Get())
 		        .AddDeveloperSigningCredential();
 		}
 
