@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.Models;
-using IdentityServer4.Test;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +17,9 @@ namespace sidhu_identity_server
 		        .AddInMemoryApiResources(Resources.GetApiResources())
 		        .AddTestUsers(Users.Get())
 		        .AddDeveloperSigningCredential();
-		}
+
+            services.AddMvc();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -35,7 +31,10 @@ namespace sidhu_identity_server
 
 	        app.UseIdentityServer();
 
-			app.Run(async (context) =>
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
+
+            app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
             });
