@@ -36,8 +36,8 @@ namespace sidhu_identity_server
                         "role",
                         "customAPI.write"
                     },
-                    RedirectUris = new List<string> {"https://localhost:44330/signin-oidc"},
-                    PostLogoutRedirectUris = new List<string> {"https://localhost:44330"}
+                    RedirectUris = new List<string> {"https://localhost:44387/signin-oidc"},
+                    PostLogoutRedirectUris = new List<string> { "https://localhost:44387" }
                 }
             };
 	    }

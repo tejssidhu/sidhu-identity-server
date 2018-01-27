@@ -26,7 +26,15 @@ namespace SampleIdentityServerClient
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "cookie";
-            }).AddCookie("cookie");
+                options.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("cookie")
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = "https://localhost:44301/";
+                options.ClientId = "openIdConnectClient";
+                options.SignInScheme = "cookie";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +51,8 @@ namespace SampleIdentityServerClient
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
