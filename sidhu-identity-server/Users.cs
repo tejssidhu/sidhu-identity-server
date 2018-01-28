@@ -14,7 +14,7 @@ namespace sidhu_identity_server
 	    {
 		    return new List<TestUser> {
 			    new TestUser {
-				    SubjectId = "f1e476e0-3d6e-489e-8cb3-cb41cd2e51c1",
+				    SubjectId = "2B3B4D72-1C15-40E0-A05A-012B724950C3",
 				    Username = "tej",
 				    Password = "password",
 				    Claims = new List<Claim> {

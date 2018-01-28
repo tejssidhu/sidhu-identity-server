@@ -22,14 +22,14 @@ namespace sidhu_identity_server
 	    {
 		    return new List<ApiResource> {
 			    new ApiResource {
-				    Name = "customAPI",
-				    DisplayName = "Custom API",
-				    Description = "Custom API Access",
+				    Name = "phonebookAPI",
+				    DisplayName = "Phonebook API",
+				    Description = "Phonebook API Access",
 				    UserClaims = new List<string> {"role"},
 				    ApiSecrets = new List<Secret> {new Secret("scopeSecret".Sha256())},
 				    Scopes = new List<Scope> {
-					    new Scope("customAPI.read"),
-					    new Scope("customAPI.write")
+					    new Scope("phonebookAPI.read"),
+					    new Scope("phonebookAPI.write")
 				    }
 			    }
 		    };

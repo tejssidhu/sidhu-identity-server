@@ -50,6 +50,7 @@ namespace IdentityServer4.Quickstart.UI
 			_userManager = userManager;
 			_interaction = interaction;
             _events = events;
+			_clientStore = clientStore;
 			_account = new AccountService(interaction, httpContextAccessor, schemeProvider, clientStore);
 		}
 

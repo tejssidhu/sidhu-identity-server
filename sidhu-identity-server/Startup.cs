@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace sidhu_identity_server
 {
@@ -30,6 +31,8 @@ namespace sidhu_identity_server
             var connectionString = Configuration.GetConnectionString("IdentityServerStore");
 			var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
+			services.AddCors();
+
 			services.AddDbContext<ApplicationDbContext>(builder =>
 				builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)));
 
@@ -44,22 +47,22 @@ namespace sidhu_identity_server
 					options.ConfigureDbContext = builder =>
 						builder.UseSqlServer(connectionString, sqlOptions => sqlOptions.MigrationsAssembly(migrationsAssembly)))
 				.AddAspNetIdentity<IdentityUser>()
-				//.AddInMemoryClients(Clients.Get())
-				//.AddInMemoryIdentityResources(Resources.GetIdentityResources())
-				//.AddInMemoryApiResources(Resources.GetApiResources())
-				//.AddTestUsers(Users.Get())
 				.AddDeveloperSigningCredential();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactor)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+				loggerFactor.AddConsole(LogLevel.Trace);
             }
+
+			// TODO: allow from any of the defined clients
+			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 			InitializeDbTestData(app);
 
