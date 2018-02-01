@@ -19,10 +19,12 @@ namespace sidhu_identity_server
 				    Password = "password",
 				    Claims = new List<Claim> {
 					    new Claim(JwtClaimTypes.Email, "tej@somewhere.com"),
-					    new Claim(JwtClaimTypes.Role, "admin")
-				    }
+					    new Claim(JwtClaimTypes.Role, "admin"),
+						new Claim("scope", "phonebookAPI.read"),
+						new Claim("scope", "phonebookAPI.write")
+					}
 			    }
-		    };
+			};
 	    }
 	}
 }

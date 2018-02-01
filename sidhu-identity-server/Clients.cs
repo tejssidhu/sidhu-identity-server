@@ -27,8 +27,13 @@ namespace sidhu_identity_server
 						"phonebookAPI.write"
 					},
 					AllowAccessTokensViaBrowser = true,
-					RedirectUris = new List<string> {"http://localhost:4200/signin-callback.html"},
-                    PostLogoutRedirectUris = new List<string> { "http://localhost:4200" }
+					RedirectUris = new List<string> {"http://localhost:4200/signin-callback.html", "http://localhost:4200/silent-renew.html"},
+					ClientSecrets = new List<Secret>
+					{
+						new Secret("secret1")
+					},
+
+					PostLogoutRedirectUris = new List<string> { "http://localhost:4200" }
                 }
             };
 	    }
