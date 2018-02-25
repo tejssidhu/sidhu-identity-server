@@ -222,8 +222,13 @@ namespace IdentityServer4.Quickstart.UI
 			var user = await _userManager.FindByLoginAsync(provider, userId);
 			if (user == null)
 			{
-				user = new IdentityUser { UserName = Guid.NewGuid().ToString() };
-				await _userManager.CreateAsync(user);
+                var userName = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+                if (userName != null)
+                    user = new IdentityUser { UserName = userName.Value };
+                else
+                    user = new IdentityUser { UserName = Guid.NewGuid().ToString() };
+
+                await _userManager.CreateAsync(user);
 				await _userManager.AddLoginAsync(user, new UserLoginInfo(provider, userId, provider));
 			}
 

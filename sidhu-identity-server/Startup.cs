@@ -49,6 +49,13 @@ namespace sidhu_identity_server
 				.AddAspNetIdentity<IdentityUser>()
 				.AddDeveloperSigningCredential();
 
+			services.AddAuthentication().AddGoogle("Google", options =>
+			{
+				options.SignInScheme = IdentityConstants.ExternalScheme;
+				options.ClientId = "547959092244-bjq8bb8tabsqa6fmvpp6gql57jl3rfaf.apps.googleusercontent.com";
+				options.ClientSecret = "iKo_B-DaL3O3kcq4lv7pOin4";
+			});
+
             services.AddMvc();
         }
 
