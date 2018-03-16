@@ -27,7 +27,7 @@ namespace sidhu_identity_server
 						"phonebookAPI.write"
 					},
 					AllowAccessTokensViaBrowser = true,
-					RedirectUris = new List<string> {"http://localhost:4200/signin-callback.html", "http://localhost:4200/silent-renew.html"},
+					RedirectUris = new List<string> {"http://localhost:4200/signin-callback.html", "http://localhost:4200/silent-renew.html", "https://phonebookui.azurewebsites.net/signin-callback.html", "https://phonebookui.azurewebsites.net/silent-renew.html"},
 					ClientSecrets = new List<Secret>
 					{
 						new Secret("secret1")
