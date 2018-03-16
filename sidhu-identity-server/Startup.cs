@@ -29,6 +29,9 @@ namespace sidhu_identity_server
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("IdentityServerStore");
+			var googleClientId = Configuration.GetValue<string>("GoogleClientId");
+			var googleClientSecret = Configuration.GetValue<string>("GoogleClientSecret");
+
 			var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
 			services.AddCors();
@@ -52,8 +55,8 @@ namespace sidhu_identity_server
 			services.AddAuthentication().AddGoogle("Google", options =>
 			{
 				options.SignInScheme = IdentityConstants.ExternalScheme;
-				options.ClientId = "547959092244-bjq8bb8tabsqa6fmvpp6gql57jl3rfaf.apps.googleusercontent.com";
-				options.ClientSecret = "iKo_B-DaL3O3kcq4lv7pOin4";
+				options.ClientId = googleClientId;
+				options.ClientSecret = googleClientSecret;
 			});
 
             services.AddMvc();
@@ -71,7 +74,8 @@ namespace sidhu_identity_server
 			// TODO: allow from any of the defined clients
 			app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-			InitializeDbTestData(app);
+			var initialPassword = Configuration.GetValue<string>("InitialPassword");
+			InitializeDbTestData(app, initialPassword);
 
 			app.UseIdentityServer();
 
@@ -84,7 +88,7 @@ namespace sidhu_identity_server
             });
         }
 
-		private static void InitializeDbTestData(IApplicationBuilder app)
+		private static void InitializeDbTestData(IApplicationBuilder app, string initialPassword)
 		{
 			using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
 			{
@@ -131,7 +135,7 @@ namespace sidhu_identity_server
 							Id = testUser.SubjectId
 						};
 
-						userManager.CreateAsync(identityUser, "Password123!").Wait();
+						userManager.CreateAsync(identityUser, initialPassword).Wait();
 						userManager.AddClaimsAsync(identityUser, testUser.Claims.ToList()).Wait();
 					}
 				}
