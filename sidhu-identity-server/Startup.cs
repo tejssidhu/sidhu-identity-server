@@ -10,6 +10,8 @@ using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.EntityFramework.DbContexts;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace sidhu_identity_server
 {
@@ -125,19 +127,34 @@ namespace sidhu_identity_server
 					context.SaveChanges();
 				}
 
-				var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-				if (!userManager.Users.Any())
-				{
-					foreach (var testUser in Users.Get())
-					{
-						var identityUser = new IdentityUser(testUser.Username)
-						{
-							Id = testUser.SubjectId
-						};
+				CreateUsers(scope, initialPassword).Wait();
+			}
+		}
 
-						userManager.CreateAsync(identityUser, initialPassword).Wait();
-						userManager.AddClaimsAsync(identityUser, testUser.Claims.ToList()).Wait();
+		private static async Task CreateUsers(IServiceScope scope, string initialPassword)
+		{
+			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+			if (!userManager.Users.Any())
+			{
+				foreach (var testUser in Users.Get())
+				{
+					var identityUser = new IdentityUser(testUser.Username)
+					{
+						Id = testUser.SubjectId,
+						SecurityStamp = Guid.NewGuid().ToString()
+					};
+
+					var result = await userManager.CreateAsync(identityUser, initialPassword);
+
+					if (result.Succeeded)
+					{
+						var claimsResult = await userManager.AddClaimsAsync(identityUser, testUser.Claims.ToList());
+
+						if (!claimsResult.Succeeded)
+						{
+						}
 					}
+
 				}
 			}
 		}
