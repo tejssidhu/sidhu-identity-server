@@ -16,7 +16,7 @@ namespace sidhu_identity_server
                 new Client {
                     ClientId = "phonebook",
                     ClientName = "Phonebook Application",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = {GrantType.Implicit, GrantType.ResourceOwnerPassword},
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -30,9 +30,8 @@ namespace sidhu_identity_server
 					RedirectUris = new List<string> {"http://localhost:4200/signin-callback.html", "http://localhost:4200/silent-renew.html", "https://phonebookui.azurewebsites.net/signin-callback.html", "https://phonebookui.azurewebsites.net/silent-renew.html"},
 					ClientSecrets = new List<Secret>
 					{
-						new Secret("secret1")
+						new Secret("secret1".Sha256())
 					},
-
 					PostLogoutRedirectUris = new List<string> { "http://localhost:4200" }
                 }
             };
